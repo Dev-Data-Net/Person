@@ -14,40 +14,22 @@ namespace Person
                 Console.WriteLine("Podaj swoje imię: \t ");
                 var surname = Console.ReadLine();
 
-                Console.WriteLine("Podaj miejsce swojego urodzenia: \t ");
+                Console.WriteLine("\nPodaj miejsce swojego urodzenia: \t ");
                 var placeOfBirth = Console.ReadLine();
 
-                Console.WriteLine("Podaj swój rok urodzenia: \t");
-                var yearOfBirth = int.Parse(Console.ReadLine());
+                Console.WriteLine("\nPodaj swój rok urodzenia: \t");
+                var yearOfBirth = GetYear();
 
-                int monthOfBirth;
-                do
-                {
-                    Console.WriteLine("Podaj swój miesiąc urodzenia (wpisz od 1 do 12): \t");
-                    monthOfBirth = int.Parse(Console.ReadLine());
+                Console.WriteLine("\nPodaj swój miesiąc urodzenia (wpisz od 1 do 12): \t");
+                var monthOfBirth = GetMonth();
 
-                    if (monthOfBirth < 1 || monthOfBirth > 12)
-                    {
-                        Console.WriteLine("Błędny miesiąc urodzenia. Podaj wartość od 1 do 12.");
-                    }
-                } 
-                while (monthOfBirth < 1 || monthOfBirth > 12);
+                Console.WriteLine("\nPodaj swój dzień urodzenia (wpisz od 1 do 31): \t");
+                var dayOfBirth = GetDayOfMonth(yearOfBirth,monthOfBirth);
 
-                int dayOfBirth;
-                do
-                {
-                    Console.WriteLine("Podaj swój dzień urodzenia (wpisz od 1 do 31): \t");
-                    dayOfBirth = int.Parse(Console.ReadLine());
-
-                    if (dayOfBirth < 1 || dayOfBirth > 31)
-                    {
-                        Console.WriteLine("Błędny dzień urodzenia. Podaj wartość od 1 do 31.");
-                    }
-                } while (dayOfBirth < 1 || dayOfBirth > 31);
-
+        
                 var birthDate = new DateTime(yearOfBirth, monthOfBirth, dayOfBirth);
-                var currentDate = DateTime.Today;
-                Console.WriteLine($"Dzisiejsza data to: {currentDate}");
+                var currentDate = DateTime.Now;
+                Console.WriteLine($"Dzisiejsza data i czas to: {currentDate}");
                 Console.WriteLine();
 
                 var age = currentDate.Year - birthDate.Year;
@@ -57,7 +39,7 @@ namespace Person
                     age--;
                 }
 
-                Console.WriteLine($" Masz na imię: {surname}. \n Miejsce urodzenia to: {placeOfBirth}. \n Twoja data urodzenia to: {dayOfBirth}-{monthOfBirth}-{yearOfBirth}. \n Masz: {age} lat.\n ");
+                Console.WriteLine($" Masz na imię: {surname}. \n Miejsce urodzenia to: {placeOfBirth}. \n Twoja data urodzenia to: {dayOfBirth}-{monthOfBirth}-{yearOfBirth}. \n Masz: {age} lat(a).\n ");
             }
             catch (Exception ex)
             {
@@ -67,6 +49,45 @@ namespace Person
             finally
             {
                 Console.ReadLine();
+            }
+        }
+
+        private static int GetDayOfMonth(int yearOfBirth, int monthOfBirth)
+        {
+            while (true)
+            {
+                if (!int.TryParse(Console.ReadLine(), out int day) || day < 1 || day > DateTime.DaysInMonth(yearOfBirth, monthOfBirth))
+                {
+                    Console.WriteLine("Podałeś nieprawidłowe dane. Spróbuj ponownie");
+                    continue;
+                }
+                return day;
+            }
+        }
+
+        private static int GetMonth()
+        {
+            while (true)
+            {
+                if (!int.TryParse(Console.ReadLine(), out int month) || month > 12 || month < 1)
+                {
+                    Console.WriteLine("Podałeś nieprawidłowe dane. Spróbuj ponownie");
+                    continue;
+                }
+                return month;
+            }
+        }
+
+        private static int GetYear()
+        {
+            while (true)
+            {
+                if (!int.TryParse(Console.ReadLine(), out int year) || year > DateTime.Now.Year)
+                {
+                    Console.WriteLine("Podałeś nieprawidłowe dane. Spróbuj ponownie");
+                    continue;
+                }
+                return year;
             }
         }
     }
